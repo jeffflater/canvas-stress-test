@@ -1,24 +1,61 @@
-import React, {Component} from 'react';
+import React, {PureComponent} from 'react';
+import PropTypes from 'prop-types';
 import {Stage, Layer} from 'react-konva';
 import * as _ from 'lodash';
 import ColoredRect from './colored-rect';
 
-class Konva extends Component{
+const LAYER_QUANTITY = 1;
+const RECTANGLE_QUANTITY = 1;
 
+class Konva extends PureComponent{
+    static propTypes = {
+        width: PropTypes.number.isRequired,
+        height: PropTypes.number.isRequired
+    };
+    static defaultProps = {
+        width: window.innerWidth,
+        height: 500
+    };
+
+    get stage(){
+        return this.refs.stage.getStage()
+    }
+
+    constructor(...args){
+        super(...args);
+        this.onZoom = this.onZoom.bind(this);
+        this.renderLayers = this.renderLayers.bind(this);
+    }
 
     renderLayers = index => (
         <Layer key={`layer${index}`}>
-            {_.times(1000, rectIndex =>
-                <ColoredRect key={`layer${index}-rect${rectIndex}`}/>)}
+            {_.times(RECTANGLE_QUANTITY, rectIndex =>
+                <ColoredRect key={`layer${index}-rect${rectIndex}`}
+                             containerSize={this.props}/>)}
         </Layer>
     );
 
+    onZoom({evt}){
+        evt.preventDefault();
+        const zoomStep = 1.01;
+        const oldScale = this.stage.scaleX();
+        const newScale = evt.deltaY > 0 ? oldScale * zoomStep : oldScale / zoomStep;
+        this.stage.scale({x: newScale, y: newScale});
+        this.stage.batchDraw();
+    }
+
     render(){
-        const quantity = 10;
         return (
-            <Stage width={1000} height={700} className="canvas">
-                {_.times(quantity, this.renderLayers)}
-            </Stage>
+            <div ref='container'>
+                <Stage
+                    width={this.props.width}
+                    height={this.props.height}
+                    className='canvas'
+                    ref='stage'
+                    onWheel={this.onZoom}>
+                    {_.times(LAYER_QUANTITY, this.renderLayers)}
+                </Stage>
+            </div>
         );
     }
 }

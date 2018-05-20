@@ -1,9 +1,4 @@
-class Route{
-    constructor(name, path){
-        this.name = name;
-        this.path = path;
-    }
-}
+import Route from '../common/route';
 
 export default [
     new Route('home', '/'),

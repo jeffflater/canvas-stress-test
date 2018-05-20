@@ -1,15 +1,41 @@
 import React from 'react';
 import {Rect} from 'react-konva';
+import PropTypes from 'prop-types';
 import Konva from 'konva';
 
+const RECTANGLE_WIDTH = 100;
+const RECTANGLE_HEIGHT = 100;
+
+
 class ColoredRect extends React.Component{
-    position = {
-        x: Math.floor((Math.random() * window.innerWidth) + 1),
-        y: Math.floor((Math.random() * 700) + 1)
-    };
     state = {
         color: 'green'
     };
+
+    static propTypes = {
+        containerSize: PropTypes.shape({
+            width: PropTypes.number.isRequired,
+            height: PropTypes.number.isRequired,
+        })
+    };
+
+    static defaultProps = {
+        containerSize: {
+            width: 50,
+            height: 50
+        }
+    };
+
+    constructor(props, ...args){
+        super(props, ...args);
+        const getRandomPosition = max => Math.floor((Math.random() * max) + 1);
+        const {width, height} = props.containerSize;
+        this.position = {
+            x: getRandomPosition(width),
+            y: getRandomPosition(height),
+        }
+    }
+
     handleClick = () =>{
         console.log('rect', this.rect.getAttrs());
         this.setState({
@@ -24,10 +50,10 @@ class ColoredRect extends React.Component{
                 draggable
                 x={this.position.x}
                 y={this.position.y}
-                width={10}
-                height={10}
+                width={RECTANGLE_WIDTH}
+                height={RECTANGLE_HEIGHT}
                 fill={this.state.color}
-                dragBoundFunc={(pos) => (this.position = pos)}
+                dragBoundFunc={(pos) => this.position = pos}
                 onClick={this.handleClick}
             />
         );

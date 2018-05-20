@@ -62,7 +62,8 @@ body {
 }
 
 .page .canvas {
-    height: 500px;
+    background-color: red;
+    border: 10px solid #222;
 }
 
 @keyframes app-logo-spin {

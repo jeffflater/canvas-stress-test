@@ -1,12 +1,12 @@
-import React from 'react';
+import React, {Component} from 'react';
 import {BrowserRouter as Router, Route, Switch, Link} from 'react-router-dom';
-import Loadable from 'react-loadable';
 import Routes from './routes';
 import * as _ from 'lodash';
 
 
 const CreateLink = ({name, path}) => path !== '/' && (
     <Route
+        key={`${name}-link`}
         path={path}
         exact
         children={({match}) => (
@@ -18,33 +18,58 @@ const CreateLink = ({name, path}) => path !== '/' && (
 );
 
 
-const LoadableRoute = ({name, path}) =>{
-    const routeProps = {
-        component: Loadable({
-            loader: () => import(`./routes/${name}`),
-            loading: () => <div>Loading...</div>
-        }),
-        path
+class App extends Component{
+    constructor(...args){
+        super(...args);
+        this.resizeCanvas = this.resizeCanvas.bind(this);
+        this.renderRoute = this.renderRoute.bind(this);
+        this.state = {
+            canvasSize: {
+                width: window.innerWidth,
+                height: 500,
+            }
+        };
+        this.page = React.createRef();
+        window.addEventListener('resize', this.resizeCanvas);
+    }
+
+
+    resizeCanvas(){
+        this.setState({
+            canvasSize: {
+                height: this.page.offsetHeight,
+                width: this.page.offsetWidth
+            }
+        })
+    }
+
+    renderRoute = ({name, path, component}) =>{
+        return (
+            <Route exact
+                   key={`${name}-route`}
+                   component={component}
+                   path={path}
+            />
+        );
     };
-    return (<Route exact {...routeProps}/>)
-};
 
-
-const App = () => (
-    <Router>
-        <Switch>
-            <div className="app">
-                <header className="app-header">
-                    <div className="menu">
-                        {_.map(Routes, CreateLink)}
+    render(){
+        return (
+            <Router>
+                <Switch>
+                    <div className="app">
+                        <header key='header' className="app-header">
+                            <div className="menu">
+                                {_.map(Routes, CreateLink)}
+                            </div>
+                        </header>
+                        <div key='page' className="page" ref={this.page}>
+                            {_.map(Routes, this.renderRoute)}
+                        </div>
                     </div>
-                </header>
-                <div className="page">
-                {_.map(Routes, LoadableRoute)}
-                </div>
-            </div>
-        </Switch>
-    </Router>
-);
+                </Switch>
+            </Router>);
+    }
+}
 
 export default App;
