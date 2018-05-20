@@ -21,26 +21,8 @@ const CreateLink = ({name, path}) => path !== '/' && (
 class App extends Component{
     constructor(...args){
         super(...args);
-        this.resizeCanvas = this.resizeCanvas.bind(this);
         this.renderRoute = this.renderRoute.bind(this);
-        this.state = {
-            canvasSize: {
-                width: window.innerWidth,
-                height: 500,
-            }
-        };
         this.page = React.createRef();
-        window.addEventListener('resize', this.resizeCanvas);
-    }
-
-
-    resizeCanvas(){
-        this.setState({
-            canvasSize: {
-                height: this.page.offsetHeight,
-                width: this.page.offsetWidth
-            }
-        })
     }
 
     renderRoute = ({name, path, component}) =>{

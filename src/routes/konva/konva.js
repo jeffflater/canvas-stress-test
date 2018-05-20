@@ -5,7 +5,7 @@ import * as _ from 'lodash';
 import ColoredRect from './colored-rect';
 
 const LAYER_QUANTITY = 1;
-const RECTANGLE_QUANTITY = 1;
+const RECTANGLE_QUANTITY = 10;
 
 class Konva extends PureComponent{
     static propTypes = {
@@ -13,7 +13,7 @@ class Konva extends PureComponent{
         height: PropTypes.number.isRequired
     };
     static defaultProps = {
-        width: window.innerWidth,
+        width: window.innerWidth - 50,
         height: 500
     };
 
@@ -25,7 +25,17 @@ class Konva extends PureComponent{
         super(...args);
         this.onZoom = this.onZoom.bind(this);
         this.renderLayers = this.renderLayers.bind(this);
+
     }
+
+    /*componentDidMount(){
+        this.stage.on('mousedown touchstart', function (){
+            console.log('Mousedown or touchstart');
+        });
+        this.stage.on('mouseup touchend', function (){
+            console.log('Mouseup or touchend');
+        });
+    }*/
 
     renderLayers = index => (
         <Layer key={`layer${index}`}>
