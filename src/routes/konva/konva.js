@@ -5,7 +5,7 @@ import * as _ from 'lodash';
 import ColoredRect from './colored-rect';
 
 const LAYER_QUANTITY = 1;
-const RECTANGLE_QUANTITY = 10;
+const RECTANGLE_QUANTITY = 1;
 
 class Konva extends PureComponent{
     static propTypes = {
@@ -56,7 +56,7 @@ class Konva extends PureComponent{
 
     render(){
         return (
-            <div ref='container'>
+            <div>
                 <Stage
                     width={this.props.width}
                     height={this.props.height}

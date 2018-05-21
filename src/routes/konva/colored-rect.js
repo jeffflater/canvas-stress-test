@@ -1,10 +1,7 @@
 import React from 'react';
 import {Rect} from 'react-konva';
 import PropTypes from 'prop-types';
-import Konva from 'konva';
-
-const RECTANGLE_WIDTH = 100;
-const RECTANGLE_HEIGHT = 100;
+import {RECTANGLE_WIDTH, RECTANGLE_HEIGHT} from '../../common/configuration';
 
 
 class ColoredRect extends React.Component{
@@ -43,10 +40,9 @@ class ColoredRect extends React.Component{
     }
 
     onClick = () =>{
-        console.log('rect', this.rect.getAttrs());
-        this.setState({
-            color: Konva.Util.getRandomColor()
-        });
+        /*  this.setState({
+              color: Konva.Util.getRandomColor()
+          });*/
     };
 
     onDrag(pos){
@@ -61,9 +57,9 @@ class ColoredRect extends React.Component{
     }
 
     render(){
+        console.log('this.position.x', this.position.x);
         return (
             <Rect
-                ref={(element) => this.rect = element}
                 draggable
                 x={this.position.x}
                 y={this.position.y}

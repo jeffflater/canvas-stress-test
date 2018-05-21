@@ -2627,6 +2627,10 @@ extsprintf@^1.2.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/extsprintf/-/extsprintf-1.4.0.tgz#e2689f8f356fad62cca65a3a91c5df5f9551692f"
 
+fabric-webpack@^1.6.0-rc.1:
+  version "1.6.0-rc.1"
+  resolved "https://registry.yarnpkg.com/fabric-webpack/-/fabric-webpack-1.6.0-rc.1.tgz#f15c1b43108ad3ebacf4f01f440133841a1635ef"
+
 fast-deep-equal@^1.0.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/fast-deep-equal/-/fast-deep-equal-1.1.0.tgz#c053477817c86b51daa853c81e059b733d023614"
