@@ -13,14 +13,18 @@ class ColoredRect extends React.Component{
         containerSize: PropTypes.shape({
             width: PropTypes.number.isRequired,
             height: PropTypes.number.isRequired,
-        })
+        }),
+        onClick: PropTypes.func,
+        id: PropTypes.string.isRequired,
+        color: PropTypes.string,
     };
 
     static defaultProps = {
         containerSize: {
             width: 50,
             height: 50
-        }
+        },
+        color: 'green'
     };
 
     constructor(props, ...args){
@@ -31,44 +35,62 @@ class ColoredRect extends React.Component{
             return Math.floor((Math.random() * max) + 1);
         };
 
-        this.position = {
-            x: getRandomPosition('width'),
-            y: getRandomPosition('height'),
+        this.state = {
+            position: {
+                x: getRandomPosition('width'),
+                y: getRandomPosition('height'),
+            },
+            color: props.color
         };
         this.onClick = this.onClick.bind(this);
         this.onDrag = this.onDrag.bind(this);
+        this.move = this.move.bind(this);
+        this.changeColor = this.changeColor.bind(this);
     }
 
-    onClick = () =>{
-        /*  this.setState({
-              color: Konva.Util.getRandomColor()
-          });*/
-    };
+    onClick = () => this.props.onClick && this.props.onClick(this);
+
+    changeColor(color){
+        this.setState({
+            color
+        });
+    }
+
+    move(x, y){
+        this.setState({
+            position: {
+                x: this.state.position.x + x,
+                y: this.state.position.y + y,
+            }
+        });
+    }
 
     onDrag(pos){
         let {width, height} = this.props.containerSize;
         height = height - RECTANGLE_WIDTH;
         width = width - RECTANGLE_HEIGHT;
-        this.position = {
+        const position = {
             x: pos.x < width ? (pos.x < 0 ? 0 : pos.x) : width,
             y: pos.y < height ? (pos.y < 0 ? 0 : pos.y) : height,
         };
-        return this.position;
+
+        this.setState({
+            position
+        });
+        return position;
     }
 
     render(){
-        console.log('this.position.x', this.position.x);
+        const {position, color} = this.state;
         return (
             <Rect
-                draggable
-                x={this.position.x}
-                y={this.position.y}
+                x={position.x}
+                y={position.y}
                 width={RECTANGLE_WIDTH}
                 height={RECTANGLE_HEIGHT}
-                fill={this.state.color}
+                fill={color}
                 strokeWidth={3}
                 stroke="black"
-                dragBoundFunc={this.onDrag}
                 onClick={this.onClick}
             />
         );

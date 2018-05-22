@@ -1,13 +1,19 @@
 import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
-import {Stage, Layer} from 'react-konva';
+import {Stage, Layer, Group} from 'react-konva';
 import * as _ from 'lodash';
 import ColoredRect from './colored-rect';
+import {RECTANGLE_HEIGHT, RECTANGLE_WIDTH} from '../../common/configuration';
 
-const LAYER_QUANTITY = 1;
-const RECTANGLE_QUANTITY = 1;
+const LAYER_QUANTITY = 2;
+const RECTANGLE_QUANTITY = {
+    0: 1000,
+    1: 100,
+};
 
 class Konva extends PureComponent{
+    selectedSquares = [];
+
     static propTypes = {
         width: PropTypes.number.isRequired,
         height: PropTypes.number.isRequired
@@ -25,6 +31,8 @@ class Konva extends PureComponent{
         super(...args);
         this.onZoom = this.onZoom.bind(this);
         this.renderLayers = this.renderLayers.bind(this);
+        this.onSquareClick = this.onSquareClick.bind(this);
+        this.onDrag = this.onDrag.bind(this);
 
     }
 
@@ -37,13 +45,40 @@ class Konva extends PureComponent{
         });
     }*/
 
-    renderLayers = index => (
-        <Layer key={`layer${index}`}>
-            {_.times(RECTANGLE_QUANTITY, rectIndex =>
-                <ColoredRect key={`layer${index}-rect${rectIndex}`}
-                             containerSize={this.props}/>)}
-        </Layer>
-    );
+    renderLayers = index =>{
+        const layerId = `layer${index}`;
+        return (
+            <Layer key={layerId}>
+                <Group draggable dragBoundFunc={pos => this.onDrag(pos, layerId)}>
+                    {_.times(RECTANGLE_QUANTITY[index], rectIndex =>{
+                        const key = `layer${index}-rect${rectIndex}`;
+                        return <ColoredRect key={key}
+                                            id={key}
+                                            containerSize={this.props}
+                                            onClick={this.onSquareClick}/>;
+                    })}
+                </Group>
+            </Layer>
+        );
+    };
+
+    onDrag(pos, layerId){
+        console.log(`pos for '${layerId}' :`, pos);
+        return pos;
+    }
+
+    onSquareClick(square){
+        if(_.some(this.selectedSquares, selectedSquare => selectedSquare === square.props.id)){
+            square.changeColor('yellow');
+            _.remove(this.selectedSquares, selectedSquare => selectedSquare === square.props.id)
+        } else{
+            square.changeColor('green');
+            this.selectedSquares = [
+                ...this.selectedSquares,
+                square.props.id
+            ];
+        }
+    }
 
     onZoom({evt}){
         evt.preventDefault();

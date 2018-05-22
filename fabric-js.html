@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <title>Canvas example</title>
+    <script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
+</head>
+<body>
+<canvas id="demoCanvas"></canvas>
+<script>
+    // create a canvas wrapper
+    stage = new createjs.Stage('demoCanvas');
+    //Create a Shape DisplayObject.
+    circle = new createjs.Shape();
+    circle.graphics.beginFill('red').drawCircle(0, 0, 40);
+    //Set position of Shape instance.
+    circle.x = circle.y = 50;
+    //Add Shape instance to stage display list.
+    stage.addChild(circle);
+    //Update stage will render next frame
+    stage.update();
+</script>
+</body>
+</html>

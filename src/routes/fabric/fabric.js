@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {fabric} from 'fabric-webpack';
+import {fabric} from 'fabric';
 import {RECTANGLE_WIDTH, RECTANGLE_HEIGHT} from '../../common/configuration';
 
 class Fabric extends Component{
@@ -24,8 +24,7 @@ class Fabric extends Component{
         });
 
         fabricCanvas.add(rect);
-        console.log('fabricCanvas', fabricCanvas);
-        console.log('fabric', fabric);
+
     }
 
     render(){
