@@ -1,12 +1,12 @@
 import React, {Component} from 'react';
 import {fabric} from 'fabric';
-import {RECTANGLE_WIDTH, RECTANGLE_HEIGHT} from '../../common/configuration';
+import {RECTANGLE_WIDTH, RECTANGLE_HEIGHT, CANVAS_HEIGHT, CANVAS_WIDTH} from '../../common/configuration';
 
 class Fabric extends Component{
 
     static defaultProps = {
-        width: window.innerWidth - 50,
-        height: 500
+        width: CANVAS_WIDTH,
+        height: CANVAS_HEIGHT
     };
 
     componentDidMount(){

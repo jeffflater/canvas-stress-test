@@ -1,2 +1,3 @@
-import Fabric from './easel';
-export default Fabric;
+import Easel from './easel';
+
+export default Easel;

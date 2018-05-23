@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {Stage, Layer, Group} from 'react-konva';
 import * as _ from 'lodash';
 import ColoredRect from './colored-rect';
-import {RECTANGLE_HEIGHT, RECTANGLE_WIDTH} from '../../common/configuration';
+import {CANVAS_HEIGHT, CANVAS_WIDTH} from '../../common/configuration'
 
 const LAYER_QUANTITY = 2;
 const RECTANGLE_QUANTITY = {
@@ -19,8 +19,8 @@ class Konva extends PureComponent{
         height: PropTypes.number.isRequired
     };
     static defaultProps = {
-        width: window.innerWidth - 50,
-        height: 500
+        width: CANVAS_WIDTH,
+        height: CANVAS_HEIGHT
     };
 
     get stage(){
@@ -62,10 +62,7 @@ class Konva extends PureComponent{
         );
     };
 
-    onDrag(pos, layerId){
-        console.log(`pos for '${layerId}' :`, pos);
-        return pos;
-    }
+    onDrag = (pos, layerId) => pos;
 
     onSquareClick(square){
         if(_.some(this.selectedSquares, selectedSquare => selectedSquare === square.props.id)){

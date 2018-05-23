@@ -1,37 +1,49 @@
-import React, {Component} from 'react';
-import {RECTANGLE_WIDTH, RECTANGLE_HEIGHT} from '../../common/configuration';
+import React from 'react';
+import {CANVAS_HEIGHT, CANVAS_WIDTH} from '../../common/configuration';
+import * as _ from 'lodash';
 
-class Fabric extends Component{
-
+const Easel = (createjs) => class extends React.Component{
     static defaultProps = {
-        width: window.innerWidth - 50,
-        height: 500
+        width: CANVAS_WIDTH,
+        height: CANVAS_HEIGHT
     };
 
+    constructor(...args){
+        super(...args);
+        this.onDrag = this.onDrag.bind(this);
+    }
+
+    onDrag(evt){
+        console.log('evt', evt);
+        evt.currentTarget.x = evt.stageX;
+        evt.currentTarget.y = evt.stageY;
+        this.stage.update();
+    }
+
     componentDidMount(){
-        /*console.log('createjs', createjs);
-        const stage = new createjs.Stage('easel-canvas');
-        //Create a Shape DisplayObject.
-        const circle = new createjs.Shape();
-        circle.graphics.beginFill('red').drawCircle(0, 0, 40);
-        //Set position of Shape instance.
-        circle.x = circle.y = 50;
-        //Add Shape instance to stage display list.
-        stage.addChild(circle);
-        //Update stage will render next frame
-        stage.update();*/
+        this.stage = new createjs.Stage('demoCanvas');
+        _.times(50, (index) =>{
+            const circle = new createjs.Shape();
+            circle.graphics.beginFill('DeepSkyBlue').drawRect(index + (55 * index), index + (55 * index), 50, 50);
+            circle.on('pressmove', this.onDrag);
+            this.stage.addChild(circle);
+        });
+        this.stage.update();
+
 
     }
+
 
     render(){
-        const {height, width} = this.props;
-
         return (
             <div>
-                <canvas ref='canvas' id='easel-canvas' className='canvas' width={width} height={height}/>
+                <canvas id='demoCanvas'
+                        style={{backgroundColor: 'white'}}
+                        height={this.props.height}
+                        width={this.props.width}/>
             </div>
-        );
+        )
     }
-}
+};
 
-export default Fabric;
+export default Easel(createjs);
