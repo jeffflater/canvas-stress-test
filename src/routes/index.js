@@ -5,4 +5,5 @@ export default [
     new Route('konva', '/konva'),
     new Route('fabric', '/fabric'),
     new Route('easel', '/easel'),
+    new Route('leaflet', '/leaflet'),
 ];
