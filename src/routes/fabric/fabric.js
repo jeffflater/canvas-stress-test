@@ -11,7 +11,7 @@ class Fabric extends Component{
 
     componentDidMount(){
         const {height, width} = this.props;
-        const fabricCanvas = new fabric.Canvas('canvas', {
+        const fabricCanvas = new fabric.StaticCanvas('canvas', {
             height,
             width
         });

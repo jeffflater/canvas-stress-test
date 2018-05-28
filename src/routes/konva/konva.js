@@ -4,10 +4,11 @@ import {Stage, Layer, Group} from 'react-konva';
 import * as _ from 'lodash';
 import ColoredRect from './colored-rect';
 import {CANVAS_HEIGHT, CANVAS_WIDTH} from '../../common/configuration'
+import * as moment from 'moment/moment';
 
 const LAYER_QUANTITY = 2;
 const RECTANGLE_QUANTITY = {
-    0: 1000,
+    0: 2900,
     1: 100,
 };
 
@@ -29,11 +30,17 @@ class Konva extends PureComponent{
 
     constructor(...args){
         super(...args);
+        this.time = moment();
         this.onZoom = this.onZoom.bind(this);
         this.renderLayers = this.renderLayers.bind(this);
         this.onSquareClick = this.onSquareClick.bind(this);
         this.onDrag = this.onDrag.bind(this);
 
+    }
+
+    componentDidMount(){
+        const time = moment().diff(this.time, 'milliseconds');
+        console.log(`time ${time} ms for konva`);
     }
 
     /*componentDidMount(){
@@ -47,9 +54,10 @@ class Konva extends PureComponent{
 
     renderLayers = index =>{
         const layerId = `layer${index}`;
+
         return (
             <Layer key={layerId}>
-                <Group draggable dragBoundFunc={pos => this.onDrag(pos, layerId)}>
+                <Group draggable={index === 1} dragBoundFunc={pos => this.onDrag(pos, layerId)}>
                     {_.times(RECTANGLE_QUANTITY[index], rectIndex =>{
                         const key = `layer${index}-rect${rectIndex}`;
                         return <ColoredRect key={key}
@@ -66,10 +74,10 @@ class Konva extends PureComponent{
 
     onSquareClick(square){
         if(_.some(this.selectedSquares, selectedSquare => selectedSquare === square.props.id)){
-            square.changeColor('yellow');
+            square.changeColor('green');
             _.remove(this.selectedSquares, selectedSquare => selectedSquare === square.props.id)
         } else{
-            square.changeColor('green');
+            square.changeColor('yellow');
             this.selectedSquares = [
                 ...this.selectedSquares,
                 square.props.id
